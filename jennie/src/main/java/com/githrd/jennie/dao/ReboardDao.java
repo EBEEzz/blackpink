@@ -86,5 +86,97 @@ public class ReboardDao {
 		}
 		return cnt;
 	}
+	
+	//작성자 정보조회 전담 처리함수
+	public BoardVO getWriterInfo(String id) {
+		//반환값 변수
+		BoardVO bVO = new BoardVO();
+		//커넥션
+		con = db.getCon();
+		//질의명령
+		String sql = rSQL.getSQL(rSQL.SEL_WRITER_INFO);
+		//명령전달도구
+		pstmt = db.getPSTMT(con, sql);
+		try {
+			//질의명령완성
+			pstmt.setString(1, id);
+			//보내고 결과받고
+			rs = pstmt.executeQuery();
+			//데이터 꺼내서 VO에 담고
+			rs.next();
+			bVO.setMno(rs.getInt("mno"));
+			bVO.setAvatar(rs.getString("savename"));
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			db.close(rs);
+			db.close(pstmt);
+			db.close(con);
+		}
+		//VO반환
+		return bVO;
+	}
+	
+	//원글 등록 데이터베이스 작업 전담 처리함수
+	public int addReboard(BoardVO bVO) {
+		int cnt = 0;
+		//커넥션
+		con = db.getCon();
+		//질의명렁
+		String sql = rSQL.getSQL(rSQL.INSERT_REBOARD);
+		//명령전달도구
+		pstmt = db.getPSTMT(con, sql);
+		try {
+			//질의명령 완성
+			pstmt.setNull(1, java.sql.Types.NULL);
+			pstmt.setInt(2, bVO.getMno());
+			pstmt.setString(3, bVO.getBody());
+			//보내고 결과받기
+			cnt = pstmt.executeUpdate();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			db.close(pstmt);
+			db.close(con);
+		}
+		//결과 내보내기
+		return cnt;
+	}
+	
+	//댓글 쓰기 사용데이터 조회 전담 처리함수
+	public BoardVO getReboardInfo(int bno, String id) {
+		BoardVO bVO = new BoardVO();
+		//커넥션
+		con = db.getCon();
+		//질의명령
+		String sql = rSQL.getSQL(rSQL.SEL_REBOARD_INFO);
+		//명령전달도구
+		pstmt = db.getPSTMT(con, sql);
+		try {
+			//질의명령 완성
+			pstmt.setInt(1, bno);
+			pstmt.setString(2, id);
+			//보내고 결과받기
+			rs = pstmt.executeQuery();
+			//꺼내서 VO에 담기
+			rs.next();
+			bVO.setUpno(rs.getInt("rbno"));
+			String body = rs.getString("body");
+			body = (body.length() >= 10) ? (body.substring(0, 10) + "...") : body;
+			bVO.setBody(body);
+			bVO.setMno(rs.getInt("mno"));
+			bVO.setId(rs.getString("id"));
+			bVO.setAvatar(rs.getString("savename"));
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			db.close(rs);
+			db.close(pstmt);
+			db.close(con);
+		}
+		//VO반환
+		return bVO;
+	}
 
 }
