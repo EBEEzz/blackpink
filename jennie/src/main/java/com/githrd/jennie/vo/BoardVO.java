@@ -1,14 +1,16 @@
 package com.githrd.jennie.vo;
 
+import java.util.*;
 import java.util.Date;
 import java.sql.*;
 import java.text.*;
 
 public class BoardVO {
-	private int mno, bno, upno, rno, ano, cnt, step;
-	private String id, title, body, sdate, avatar;
+	private int mno, bno, upno, rno, ano, click, cnt, step;
+	private String id, title, body, sdate, stime, avatar;
 	private Date wdate;
 	private Time wtime;
+	ArrayList<FileVO> list;
 	public int getMno() {
 		return mno;
 	}
@@ -17,6 +19,9 @@ public class BoardVO {
 	}
 	public int getBno() {
 		return bno;
+	}
+	public void setBno(int bno) {
+		this.bno = bno;
 	}
 	public int getUpno() {
 		return upno;
@@ -30,9 +35,6 @@ public class BoardVO {
 	public void setStep(int step) {
 		this.step = step;
 	}
-	public void setBno(int bno) {
-		this.bno = bno;
-	}
 	public int getRno() {
 		return rno;
 	}
@@ -44,6 +46,12 @@ public class BoardVO {
 	}
 	public void setAno(int ano) {
 		this.ano = ano;
+	}
+	public int getClick() {
+		return click;
+	}
+	public void setClick(int click) {
+		this.click = click;
 	}
 	public int getCnt() {
 		return cnt;
@@ -73,12 +81,21 @@ public class BoardVO {
 		return sdate;
 	}
 	public void setSdate() {
-		SimpleDateFormat form1 = new SimpleDateFormat("yyyy/MM/dd ");
-		SimpleDateFormat form2 = new SimpleDateFormat("HH:mm:ss");
-		sdate = form1.format(wdate) + form2.format(wtime);
+		SimpleDateFormat form = new SimpleDateFormat("yyyy/MM/dd");
+		sdate = form.format(wdate);
 	}
 	public void setSdate(String sdate) {
 		this.sdate = sdate;
+	}
+	public String getStime() {
+		return stime;
+	}
+	public void setStime() {
+		SimpleDateFormat form = new SimpleDateFormat("HH:mm:ss");
+		stime = form.format(wtime);
+	}
+	public void setStime(String stime) {
+		this.stime = stime;
 	}
 	public String getAvatar() {
 		return avatar;
@@ -91,12 +108,20 @@ public class BoardVO {
 	}
 	public void setWdate(Date wdate) {
 		this.wdate = wdate;
+		setSdate();
 	}
 	public Time getWtime() {
 		return wtime;
 	}
 	public void setWtime(Time wtime) {
 		this.wtime = wtime;
+		setStime();
+	}
+	public ArrayList<FileVO> getList() {
+		return list;
+	}
+	public void setList(ArrayList<FileVO> list) {
+		this.list = list;
 	}
 	@Override
 	public String toString() {

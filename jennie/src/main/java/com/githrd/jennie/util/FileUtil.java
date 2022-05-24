@@ -13,11 +13,11 @@ import com.githrd.jennie.vo.*;
 /**
  * 이 클래스는 파일업로드에 필요한 기능을 처리하고
  * 업로드 파일의 정보를 만들어주는 기능의 유틸리티적인 클래스
- * @author	전은석
+ * @author	안은비
  * @since	2022.05.23
  * 
  * 			작업이력 ]
- * 				2022.05.23	- 담당자 : 전은석
+ * 				2022.05.23	- 담당자 : 안은비
  * 							- 클래스 제작
  * 		
  *
@@ -33,13 +33,19 @@ public class FileUtil {
 		this.req = req;
 		this.dir = dir;
 		setMulti();
+		setList();
 	}
 	
 	// MultipartRequest 셋팅함수
 	public void setMulti() {
 		path = this.getClass().getResource("/").getPath();
 		path = path.substring(0, path.lastIndexOf("/WEB-INF")) + dir;
-		
+		/*
+			path 경로
+				==> 첨부하는 파일을 이 프로젝트에서 서비스 하는 경우에는
+					
+					path = req.getSession().getServletContext().getRealPath("upload");
+		 */
 		try {
 			multi = new MultipartRequest(req, path, 1024 * 1024 * 10, "UTF-8", new FileRenamePolicy() {
 
@@ -76,7 +82,7 @@ public class FileUtil {
 					MultipartRequest(HttpServletRequest req, 저장경로, 업로드가능크기, 
 														파일이름이코딩방식, 파일리네임정책);
 			 */
-			setList();
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -92,7 +98,6 @@ public class FileUtil {
 		while(en.hasMoreElements()) {
 			String key = en.nextElement();
 			String oriname = multi.getOriginalFileName(key); // 업로드란 원래이름...
-			System.out.println("############# oriname : " + oriname);
 			if(oriname == null) {
 				continue;
 			}
@@ -102,6 +107,7 @@ public class FileUtil {
 			
 			// VO 만들고
 			FileVO fVO = new FileVO();
+			fVO.setId((String) req.getSession().getAttribute("SID"));
 			fVO.setOriname(oriname);
 			fVO.setSavename(savename);
 			fVO.setDir(dir);
@@ -135,6 +141,42 @@ public class FileUtil {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+	public ArrayList<FileVO> getList() {
+		return list;
+	}
+	public void setList(ArrayList<FileVO> list) {
+		this.list = list;
+	}
+	public HttpServletRequest getReq() {
+		return req;
+	}
+	public void setReq(HttpServletRequest req) {
+		this.req = req;
+	}
+	public MultipartRequest getMulti() {
+		return multi;
+	}
+	public void setMulti(MultipartRequest multi) {
+		this.multi = multi;
+	}
+	public String getDir() {
+		return dir;
+	}
+	public void setDir(String dir) {
+		this.dir = dir;
+	}
+	public String getPath() {
+		return path;
+	}
+	public void setPath(String path) {
+		this.path = path;
+	}
+	public String getbPath() {
+		return bPath;
+	}
+	public void setbPath(String bPath) {
+		this.bPath = bPath;
 	}
 	
 }

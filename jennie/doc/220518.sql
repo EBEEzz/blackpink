@@ -172,3 +172,96 @@ CREATE TABLE fileinfo(
         CONSTRAINT FI_SHOW_CK CHECK(isshow IN('Y', 'N'))
         CONSTRAINT FI_SHOW_NN NOT NULL
 );
+
+
+--220524
+select * from fileinfo;
+
+desc fileinfo;
+
+INSERT INTO
+    board(bno, bmno, title, body)
+VALUES(
+    (SELECT NVL(MAX(bno) + 1, 100001) FROM board),
+    (SELECT mno FROM member WHERE id = ?),
+    ?, ?
+)
+;
+
+INSERT INTO
+    fileinfo(fno, fbno, oriname, savename, dir, len)
+VALUES(
+    (SELECT NVL(MAX(fno) + 1, 100001) FROM fileinfo),
+    (
+        SELECT
+            MAX(bno)
+        FROM
+            board
+        WHERE
+            bmno = (
+                        SELECT
+                            mno
+                        FROM
+                            member
+                        WHERE
+                            id = ?
+                )
+    ), ?, ?, ?, ?
+)
+;
+
+
+SELECT
+    bno, title, NVL(cnt, 0) cnt
+FROM
+    board b,
+    (
+        SELECT
+            fbno, count(*) cnt
+        FROM
+            fileinfo
+        WHERE
+            isshow = 'Y'
+        group by
+            fbno
+    )
+WHERE
+    isshow = 'Y'
+    AND bno = fbno(+)
+    AND bno = 100004
+;
+
+SELECT
+    bno, id, title, wdate, click, cnt
+FROM
+    (
+        SELECT
+            ROWNUM rno, bno, id, title, wdate, click, cnt
+        FROM
+            (
+                SELECT
+                    bno, id, title, wdate, click, NVL(cnt, 0) cnt
+                FROM
+                    board b, member m,
+                    (
+                        SELECT
+                            fbno, count(*) cnt
+                        FROM
+                            fileinfo
+                        WHERE
+                            isshow = 'Y'
+                        group by
+                            fbno
+                    )
+                WHERE
+                    bmno = mno
+                    AND bno = fbno(+)
+                    AND b.isshow = 'Y'
+                    AND m.isshow = 'Y'
+                ORDER BY
+                    wdate DESC
+            )
+    )
+WHERE
+    rno BETWEEN ? AND ?
+;
