@@ -1,15 +1,16 @@
 package com.githrd.jennie.controller.board;
 
-import java.io.*;
 import java.util.*;
+import java.io.IOException;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import com.githrd.jennie.controller.*;
+import com.githrd.jennie.controller.BlpInter;
 import com.githrd.jennie.dao.*;
-import com.githrd.jennie.util.*;
 import com.githrd.jennie.vo.*;
+import com.githrd.jennie.util.*;
 
 public class BoardList implements BlpInter {
 

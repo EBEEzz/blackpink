@@ -2,10 +2,11 @@ package com.githrd.jennie.dao;
 
 import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 import com.githrd.jennie.db.*;
 import com.githrd.jennie.sql.*;
-import com.githrd.jennie.util.*;
+import com.githrd.jennie.util.PageUtil;
 import com.githrd.jennie.vo.*;
 
 public class BoardDao {
