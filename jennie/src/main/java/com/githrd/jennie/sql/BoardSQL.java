@@ -78,11 +78,9 @@ public class BoardSQL {
 			buff.append("FROM ");
 			buff.append("    board b, member m, fileinfo f ");
 			buff.append("WHERE ");
-			buff.append("    bno = fbno ");
+			buff.append("    bno = fbno(+) ");
 			buff.append("    AND bmno = mno ");
 			buff.append("    AND b.isshow = 'Y' ");
-			buff.append("    AND f.isshow = 'Y' ");
-			buff.append("    AND m.isshow = 'Y' ");
 			buff.append("    AND bno = ? ");
 			break;
 		}

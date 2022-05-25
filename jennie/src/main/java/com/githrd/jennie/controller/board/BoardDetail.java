@@ -37,10 +37,11 @@ public class BoardDetail implements BlpInter {
 		BoardDao bDao = new BoardDao();
 		BoardVO bVO = bDao.getBoardDetail(bno);
 		
-		System.out.println("********** cont list.size() : " + bVO.getList().size());
+		//클릭수 업데이트 필요
 		
 		req.setAttribute("DATA", bVO);
 		req.setAttribute("LIST", bVO.getList());
+		req.setAttribute("NOWPAGE", spage);
 		
 		return view;
 	}

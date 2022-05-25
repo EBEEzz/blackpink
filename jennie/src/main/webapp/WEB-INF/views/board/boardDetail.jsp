@@ -51,10 +51,12 @@
 			<div class="w3-col w3-margin-bottom" id="previewbox">
 				<label class="w3-col s2">Image</label>
 				<div class="w3-col m10 w3-center" id="preview">
-		<c:forEach var="data" items="${LIST}">		
+		<c:forEach var="data" items="${LIST}">
+			<c:if test="${not empty data.savename}">
 					<div class="inblock picbox">
 						<img class="pic" src="/whistle${data.dir}/${data.savename}"> 
 					</div>
+			</c:if>
 		</c:forEach>
 				</div>
 			</div>
@@ -69,7 +71,7 @@
 	</div>
 	
 	<form method="POST" action="/whistle/board/boardList.blp" id="pageFrm" name="pageFrm">
-		<input type="hidden" name="nowPage" value="${param.nowPage}">
+		<input type="hidden" name="nowPage" value="${NOWPAGE}">
 	</form>
 </body>
 </html>
