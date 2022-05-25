@@ -98,4 +98,12 @@ $(document).ready(function(){
 		
 		$('#frm').submit();
 	});
+	
+	$('.brdList').click(function(){
+		var sno = $(this).attr('id');
+		
+		$(document.frm.bno).val(sno);
+		
+		$('#frm').submit();
+	});
 });

@@ -222,5 +222,11 @@
 					실패 : ==> forward ] redirect.jsp
 									/whistle/board/boardWrite.blp
 -------------------------------------------------------------------------
+# 파일게시판 상세보기 요청
+요청내용	: 	/whistle/board/boardDetail.blp
+파라미터	:	nowPage, bno
+컨트롤러	: 	com.githrd.jennie.controller.board.BoardDetail
+뷰			:	/WEB-INF/views/board/boardDetail.jsp
+-------------------------------------------------------------------------
 
 

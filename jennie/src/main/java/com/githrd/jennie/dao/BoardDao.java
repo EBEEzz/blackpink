@@ -139,4 +139,45 @@ public class BoardDao {
 		}
 		return list;
 	}
+	
+	// 게시글 상세보기 데이터조회 전담 처리함수
+	public BoardVO getBoardDetail(int bno) {
+		BoardVO bVO = new BoardVO();
+		ArrayList<FileVO> list = new ArrayList<FileVO>();
+		bVO.setList(list);
+		con = db.getCon();
+		String sql = bSQL.getSQL(bSQL.SEL_BOARD_DETAIL);
+		pstmt = db.getPSTMT(con, sql);
+		try {
+			pstmt.setInt(1, bno);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				if(rs.isFirst()) {
+					bVO.setBno(rs.getInt("bno"));
+					bVO.setId(rs.getString("id"));
+					bVO.setTitle(rs.getString("title"));
+					bVO.setBody(rs.getString("body").replaceAll("\r\n", "<br>"));
+					bVO.setWdate(rs.getDate("wdate"));
+					bVO.setWtime(rs.getTime("wdate"));
+					bVO.setClick(rs.getInt("click"));
+				}
+				
+				FileVO fVO = new FileVO();
+				fVO.setFno(rs.getInt("fno"));
+				fVO.setOriname(rs.getString("oriname"));
+				fVO.setSavename(rs.getString("savename"));
+				fVO.setDir(rs.getString("dir"));
+				list.add(fVO);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			db.close(rs);
+			db.close(pstmt);
+			db.close(con);
+		}
+		return bVO;
+	}
+	
 }
